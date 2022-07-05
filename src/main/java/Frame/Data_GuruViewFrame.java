@@ -1,6 +1,13 @@
 package Frame;
 
+import helpers.Koneksi;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class Data_GuruViewFrame extends JFrame{
@@ -24,4 +31,27 @@ public class Data_GuruViewFrame extends JFrame{
     private JButton batalButton;
     private JButton cetakButton;
     private JButton tutupButton;
-}
+
+    public void isiTable(){
+        Connection c = Koneksi.getConnection();
+        String selectSQL= "SELECT * FROM DATA_GURU";
+        try{
+           Statement s = c.createStatement();
+           ResultSet rs = s.executeQuery(selectSQL);
+           String header[] = {"Id","Nama Guru"};
+           DefaultTableModel dat = new DefaultTableModel(header,rowCont: 0);
+           viewTable.setModel(dtm);
+           Object[] row = new Object[2];
+           while (rs.next()){
+               row[0] = rs.getInt(columnLabel: "Id");
+               row[1] = rs.getString(columnLabel: "nama");
+               dtm.addRow(row);
+           }
+
+            }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        }
+
+    }
+
